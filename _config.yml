@@ -1,4 +1,4 @@
 show_excerpts: true
-theme: minima
+theme: jekyll-theme-minimal
 title: Design Patterns
 description: Some description
