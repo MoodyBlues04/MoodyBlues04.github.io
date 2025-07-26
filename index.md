@@ -1,5 +1,6 @@
-## some header
+# Patterns
 
+## ValueObject
 
 some text
 
@@ -7,3 +8,7 @@ some text
 def init():
     print()
 ```
+
+## Entity
+
+## Dto
