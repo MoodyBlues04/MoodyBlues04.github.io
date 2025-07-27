@@ -86,6 +86,47 @@ class BankAccount
 Встроенным в `php` примером является, например, `\DateTime`.
 
 ## Entity
+Паттерн группирующий некоторые связанные бизнес-данные в объект, представляющий чаще всего некоторую реальную бизнес-сущность со своим lifetime-мом. Уникальность объекта определяется его идентичностью (чаще всего идентиикатором является `primary-key`), таким образом объекты с одинаковым идентификатором будут объявлены одинаковыми независимо от их данных.
 
+**Использование:**
++ Описание бизнес сущностей и связанных с ними логики
+
+**Особенности:**
++ Уникальность определяется идентификатором
++ Представляют реальную бизнес-сущность
+
+**Пример:**
+
+```php
+class Customer
+{
+    /**
+     * @param Order[] $orders
+     */
+    public function __construct (
+        public readonly int $id, // primary-key
+        public readonly string $name,
+        public readonly array $orders
+    ) {
+    }
+
+    public function cancelOrder(int $orderId): void
+    {
+        // some business-logic
+    }
+
+    public function addOrder(Order $order): void
+    {
+        $this->orders[] = $order;
+    }
+
+    public function leaveFeedback(string $message, int $rating): void
+    {
+        // business logic
+    }
+}
+```
+
+Также стоит отметить, что данный паттерн тесно связан с понятием модели (из паттерна MVC) и часто модели являются entity (например `Customer` из примера выше вполне может быть реализован как представитель `ActiveRecord` TODO ссылку).
 
 ## Domain Model
