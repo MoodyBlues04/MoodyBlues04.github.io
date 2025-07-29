@@ -154,3 +154,74 @@ class Customer
 **Пример:**
 
 Пример из раздела про [entity](#entity) подходит и в данном случае (класс `Customer` можно рассматривать и как доменную модель). Однако доменные модели обычно больше и сложнее. Например, могут объединять логику работы с несколькими entity.
+
+## Repository
+
+Repository представляет собой дополнительную абстракцию между хранилищем данных и остальным приложением, инкапсулирует логику получения и изменения данных в хранилище.
+
+Часто возникает вопрос о необходимости паттерна Repository при наличии системы [ORM](#orm), которая также является абстракцией над хранилищем данных, позволяет подменить их источник (на другую SQL базу например). Однако у Repository есть ряд *преимуществ*:
++ большая гибкость: источник данных можно подменить не только на другую базу, но и на файловое хранилище, вызов API
++ использование механизма [DI](#di) (будет разобран в примере), что упрощает написание тестов и понижает связность компонентов системы
++ полное разграничение бизнес-логики и логики получения данных (отсутствие которого при использовании ORM часто остается проблемой)
+
+**Особенности:**
++ в соответствии с [DDD](#ddd) репозиторий создается для каждой доменной сущности (или даже сценария ее использования) отдельно
+
+**Пример:**
+
+```php
+interface PersonRepositoryInterface
+{
+    public function findById(int $id): Person;
+    /**
+     * @return Person[]
+     */
+    public function findAll(): array;
+    public function save(Person $person): bool;
+}
+
+readonly class MysqlPersonRepository implements PersonRepositoryInterface
+{
+    public function __construct(private Query $query)
+    {
+    }
+
+    public function findById(int $id): Person
+    {
+        // ...some other data retrieving logic...
+
+        return $this->query->where('id', $id)->first(); // Laravel QueryBuilder syntax
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAll(): array
+    {
+        return $this->query->all();
+    }
+
+    public function save(Person $person): bool
+    {
+        return $person->save();
+    }
+}
+
+readonly class PersonController
+{
+    public function __construct(private PersonRepositoryInterface $personRepository)
+    {
+    }
+
+    // now we don't care about data source, just use repository to retrieve it
+    // also we can easily mock this repository in our unit-tests
+}
+
+```
+
+# Dictionary
+
+## ORM
+
+## DI
+TODO в принципы SOLID
