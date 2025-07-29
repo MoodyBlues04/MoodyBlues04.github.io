@@ -1,6 +1,6 @@
 # Введение
 
-# Паттерны банды 4-х
+# GoF patterns
 
 # Layered Architecture
 
