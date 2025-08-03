@@ -1,5 +1,9 @@
-# Введение
+# Мотивация
+Этот блог призван упростить понимание сложных паттернов для новичков в программировании, структурировать описания и примеры паттернов, послужить шпаргалкой для использования паттернов в дальнейшем.
+Большинство тем взято из [roadmap.sh](https://roadmap.sh/software-design-architecture).
 
+# Введение
+TODO Что такое паттерны, system-design, зачем все это нужно
 # GoF patterns
 
 # Layered Architecture
@@ -393,13 +397,13 @@ class MysqlPersonMapper
 
 ## Usecase
 
-## Transaction Script
 
 ## Command/Query
 
 
 # Dictionary
 
+## Transaction Script
 
 
 ## DI (dependency injection)
