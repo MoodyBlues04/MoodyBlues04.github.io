@@ -348,8 +348,42 @@ TODO дописать
 
 [DAO vs Repository](https://dzone.com/articles/differences-between-repository-and-dao)
 [Repository disadvantages](https://ayende.com/blog/3955/repository-is-the-new-singleton)
+
 ## DataMapper
-TODO
+
+[DataMapper](https://designpatternsphp.readthedocs.io/en/latest/Structural/DataMapper/README.html) отвечает за преобразование persistent-object (сущности из хранилища данных) в объект доменной области. Использование этого паттерна позволяет отделить доменную модель от ее способа представления в хранилище.
+Например, такой подход решает проблему ORM моделей, которые являются persistance-объектами, но содержат бизнес-логику.
+
+**Использование:**
++ абстракция между хранилищем и доменной моделью. Является прослойкой между уровнями infrastructure и domain (в терминологии DDD)
++ составление сложных [Entity](#entity) из разрозненных данных (таблиц БД)
+
+**Примеры:**
+
+*Замечание:* `MysqlPersonDao` из предыдущего [примера](#dao), если бы возвращало entity - являлось бы в том числе DataMapper-ом, так как из представления данных на уровне БД в DAO формировался доменный объект.
+
+```php
+
+class MysqlPersonMapper
+{
+    public function fromMysqlPerson(MysqlPersonDto $mysqlPerson): PersonEntity
+    {
+        $personEntity = new PersonEntity($mysqlPerson->id);
+        // ... mapping logic ...
+        return $personEntity;
+    }
+    
+    public function toMysqlPerson(PersonEntity $personEntity): MysqlPersonDto
+    {
+        return new MysqlPersonDto(
+            $personEntity->getId(),
+            $personEntity->getName(),
+            // ... other mapping logic ...
+        );
+    }
+}
+
+```
 
 ## Usecase
 
