@@ -288,13 +288,66 @@ readonly class MysqlPersonDao
 
 ## ORM
 
+ORM (Object relation mapping) - паттерн, который позволяет взаимодействовать с реляцинными базами данных как с объектами вашего приложения.
+
+Стоит отметить, что многими представителями сообщества [ORM считается анти-паттерном](https://habr.com/ru/articles/667078/). Это частично верно, у ORM есть существенные недостатки. Например, ORM-модели часто совмещают в себе работу с хранилищем данных и бизнес-логику, что противоречит [DRY](#dry). Однако, это не значит, что ORM не стоит использовать - важно делать это с пониманием.    
+
+**Использование:**
++ ORM создает связь таблиц БД и объектов приложения (обычно это модели)
++ ORM предоставляет абстракцию над SQL-запросами, заменяя их методами QueryBuilder-а. Например: `ModelClass::query()->select('name')->where('id', $id)->get()` (синтаксис `Eloquent`)
++ использование ORM способно существенно ускорить разработку засчет дополнительной абстракции над БД и отсутствия необходимости преобразования данных вручную
+
+**Примеры:**
++ [Doctrine](https://www.doctrine-project.org/) - используется в Symfony
++ [Eloquent](https://laravel.su/docs/12.x/eloquent) - наследник Doctrine, используется в Laravel
++ [Hibernate](https://hibernate.org/) - java-фреймворк, прородитель систем ORM
+  
+Пример работы с `Eloquent`:
+```php
+    /**
+     * @property int $id
+     * @property string $name
+     * @property int $age
+     * @property-read Collection $orders
+     */
+    class Person extends Model
+    {
+        protected $fillable = [
+            'name',
+            'age',
+        ];
+
+        public function orders(): HasMany
+        {
+            return $this->hasMany(Order::class);
+        }
+        
+        // ... other model settings ...
+    }
+
+    class PersonController
+    {
+        public function search(Request $request)
+        {
+            $persons = Person::query()
+                ->where('name', 'like', '%' . $request->get('name') . '%')
+                ->whereBetween('age', [$request->get('age_from'), $request->get('age_to')])
+                ->all();
+            return $this->response($persons);
+        }
+    }
+```
+
 ## Сравнение Dao/Orm/Repository
+TODO дописать
 
 Часто возникает вопрос о необходимости паттерна Repository при наличии системы [ORM](#orm), которая также является абстракцией над хранилищем данных, позволяет подменить их источник (на другую SQL базу например). Однако у Repository есть ряд *преимуществ*:
 + большая гибкость: источник данных можно подменить не только на другую базу, но и на файловое хранилище, вызов API
 + использование механизма [DI](#di) (будет разобран в примере), что упрощает написание тестов и понижает связность компонентов системы
 + полное разграничение бизнес-логики и логики получения данных (отсутствие которого при использовании ORM часто остается проблемой)
 
+[DAO vs Repository](https://dzone.com/articles/differences-between-repository-and-dao)
+[Repository disadvantages](https://ayende.com/blog/3955/repository-is-the-new-singleton)
 ## DataMapper
 TODO
 
