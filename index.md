@@ -350,8 +350,7 @@ TODO дописать
 [Repository disadvantages](https://ayende.com/blog/3955/repository-is-the-new-singleton)
 
 ## DataMapper
-
-[DataMapper](https://designpatternsphp.readthedocs.io/en/latest/Structural/DataMapper/README.html) отвечает за преобразование persistent-object (сущности из хранилища данных) в объект доменной области. Использование этого паттерна позволяет отделить доменную модель от ее способа представления в хранилище.
+[DataMapper](https://martinfowler.com/eaaCatalog/dataMapper.html) отвечает за преобразование persistent-object (сущности из хранилища данных) в объект доменной области. Использование этого паттерна позволяет отделить доменную модель от ее способа представления в хранилище.
 Например, такой подход решает проблему ORM моделей, которые являются persistance-объектами, но содержат бизнес-логику.
 
 **Использование:**
@@ -360,7 +359,7 @@ TODO дописать
 
 **Примеры:**
 
-*Замечание:* `MysqlPersonDao` из предыдущего [примера](#dao), если бы возвращало entity - являлось бы в том числе DataMapper-ом, так как из представления данных на уровне БД в DAO формировался доменный объект.
+*Замечание:* `MysqlPersonDao` из предыдущего [примера](#dao), если бы возвращало entity - являлось бы в том числе DataMapper-ом, так как из представления данных на уровне БД в DAO формировался доменный объект. [Другой подобный пример](https://designpatternsphp.readthedocs.io/en/latest/Structural/DataMapper/README.html)
 
 ```php
 
