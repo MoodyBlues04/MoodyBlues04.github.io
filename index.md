@@ -349,6 +349,13 @@ TODO дописать
 [DAO vs Repository](https://dzone.com/articles/differences-between-repository-and-dao)
 [Repository disadvantages](https://ayende.com/blog/3955/repository-is-the-new-singleton)
 
+## Identity Map
+[Identity Map](https://martinfowler.com/eaaCatalog/identityMap.html) - механизм, гарантирующий, что каждый загруженный (обычно из БД) объект будет загружен лишь единожды. Identity Map часто является составляющей ORM и представляет собой `Map<PrimaryKey, Model>`.
+
+**Преимущества:**
++ гарантия уникальности объектов позволяет клиенту рассчитывать, что его данные всегда соответствуют актуальным данным БД
++ улучшение производительности благодаря отсутствию повторных запросов к БД за теми же данными
+
 ## DataMapper
 [DataMapper](https://martinfowler.com/eaaCatalog/dataMapper.html) отвечает за преобразование persistent-object (сущности из хранилища данных) в объект доменной области. Использование этого паттерна позволяет отделить доменную модель от ее способа представления в хранилище.
 Например, такой подход решает проблему ORM моделей, которые являются persistance-объектами, но содержат бизнес-логику.
@@ -388,7 +395,7 @@ class MysqlPersonMapper
 
 ## Transaction Script
 
-## Command/Script
+## Command/Query
 
 
 # Dictionary
